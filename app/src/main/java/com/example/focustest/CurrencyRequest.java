@@ -1,14 +1,9 @@
 package com.example.focustest;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
-import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -24,9 +19,9 @@ public class CurrencyRequest {
     private HandlerThread handlerThread;
 
     private static volatile boolean isActive = false;
-    public List<Valute> valutes = new ArrayList<>();
+    public static List<Valute> valutes = new ArrayList<>();
 
-    public CurrencyRequest() {
+    public CurrencyRequest(MyCallBack callBack) {
 
         if (isActive) {
             Log.d("####", "request already sent");
@@ -35,6 +30,7 @@ public class CurrencyRequest {
 
         Log.d("####", "Update the exchange rate");
 
+        Handler mainHandler = new Handler(Looper.getMainLooper());
         handlerThread = new HandlerThread("currency_request");
         handlerThread.start();
 
@@ -64,10 +60,14 @@ public class CurrencyRequest {
                 for (Map.Entry<String, Valute> entry : json.getValuteList().entrySet()) {
                     valutes.add(entry.getValue());
                 }
+
                 Log.d("####", "valutes = " + valutes);
+                mainHandler.post(callBack::callbackCall);
             } catch (Exception e) {
                 e.printStackTrace();
 
+            } finally {
+                isActive = false;
             }
         });
     }

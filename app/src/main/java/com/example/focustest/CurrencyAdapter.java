@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Map;
 
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHolder> {
 
@@ -21,6 +20,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
         this.valuteList = valuteList;
         this.inflater = LayoutInflater.from(context);
     }
+
     @Override
     public CurrencyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -42,7 +42,8 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView nameView, capitalView;
-        ViewHolder(View view){
+
+        ViewHolder(View view) {
             super(view);
             nameView = (TextView) view.findViewById(R.id.name);
             capitalView = (TextView) view.findViewById(R.id.capital);
